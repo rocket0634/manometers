@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "manometers", "Assembly-CSharp.csproj", "{F58F20E2-373E-D0BE-6B91-2678A6CC1EBD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "manometers", "Assembly-CSharp-Editor.csproj", "{CCF3D8EC-551F-332F-F6D1-E4BFFBBB1C3B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F58F20E2-373E-D0BE-6B91-2678A6CC1EBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F58F20E2-373E-D0BE-6B91-2678A6CC1EBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F58F20E2-373E-D0BE-6B91-2678A6CC1EBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F58F20E2-373E-D0BE-6B91-2678A6CC1EBD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CCF3D8EC-551F-332F-F6D1-E4BFFBBB1C3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCF3D8EC-551F-332F-F6D1-E4BFFBBB1C3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCF3D8EC-551F-332F-F6D1-E4BFFBBB1C3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCF3D8EC-551F-332F-F6D1-E4BFFBBB1C3B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Assembly-CSharp.csproj
+	EndGlobalSection
+EndGlobal

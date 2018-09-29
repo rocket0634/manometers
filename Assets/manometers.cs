@@ -440,14 +440,14 @@
 				comb += 3;
 			} else if (Info.IsIndicatorOff ("FRK")) {
 				comb -= 8;
-			} else if (Info.GetBatteryCount (Battery.AA) > Info.GetBatteryCount (Battery.D)) { 				//WARNING : NEED TO KNOW AA>D
+			} else if (Info.GetBatteryCount (Battery.AA) + Info.GetBatteryCount (Battery.AAx3) + Info.GetBatteryCount (Battery.AAx4) > Info.GetBatteryCount (Battery.D)) { 				//WARNING : NEED TO KNOW AA>D
 				comb += 2;
 			} else {
 				comb -= 2;
 			}
 			break;
 		case 0:
-			if (Info.GetBatteryCount (Battery.AA) <= Info.GetBatteryCount (Battery.D)) {				//WARNING : NEED TO KNOW AA<=D
+			if (Info.GetBatteryCount (Battery.AA) + Info.GetBatteryCount (Battery.AAx3) + Info.GetBatteryCount (Battery.AAx4) <= Info.GetBatteryCount (Battery.D)) {				//WARNING : NEED TO KNOW AA<=D
 				comb += 2;
 			} else if (Info.IsIndicatorOn ("TRN")) {
 				comb += 1;
@@ -504,7 +504,7 @@
 			}
 			break;
 		case 6:
-			if (Info.GetBatteryCount (Battery.D)< Info.GetBatteryCount (Battery.AA)) {			//WARNING NEED TO KNOW D<AA
+			if (Info.GetBatteryCount (Battery.D)< Info.GetBatteryCount (Battery.AA) + Info.GetBatteryCount (Battery.AAx3) + Info.GetBatteryCount (Battery.AAx4)) {			//WARNING NEED TO KNOW D<AA
 				comb += 2;
 			} else if (Info.GetIndicators ().Count () > 2) {
 				comb -= 1;
@@ -517,7 +517,7 @@
 		case 15:
 			if (System.DateTime.Now.Hour >= 17) {
 				comb += 2;
-			} else if (Info.GetBatteryCount (Battery.AA) == Info.GetIndicators ().Count ()) {			//WARNING NEED TO KNOW AA==IND
+			} else if (Info.GetBatteryCount (Battery.AA) + Info.GetBatteryCount (Battery.AAx3) + Info.GetBatteryCount (Battery.AAx4) == Info.GetIndicators ().Count ()) {			//WARNING NEED TO KNOW AA==IND
 				comb -= 2;
 			} else if (Info.IsIndicatorOn ("FRQ")) {
 				comb += 3;
@@ -563,7 +563,7 @@
 				comb += 2;
 			} else if (Info.IsIndicatorOn ("CLR")) {
 				comb -= 2;
-			} else if (Info.GetBatteryCount (Battery.AA) == Info.GetStrikes ()) {						//WARNING NEED TO KNOW AA==STR
+			} else if (Info.GetBatteryCount (Battery.AA) + Info.GetBatteryCount (Battery.AAx3) + Info.GetBatteryCount (Battery.AAx4) == Info.GetStrikes ()) {						//WARNING NEED TO KNOW AA==STR
 				comb += 3;
 			} else {
 				comb += 2;
@@ -631,7 +631,7 @@
 				comb += 3;
 			} else if (Info.GetModuleNames ().Contains ("LEGO")) {
 				comb -= 2;
-			} else if (Info.GetBatteryCount (Battery.AA) > 2) {												//WARNING NEED TO KNOW AA>2
+			} else if (Info.GetBatteryCount (Battery.AA) + Info.GetBatteryCount (Battery.AAx3) + Info.GetBatteryCount (Battery.AAx4) > 2) {												//WARNING NEED TO KNOW AA>2
 				comb += 2;
 			} else {
 				comb -= 5;
@@ -642,7 +642,7 @@
 				comb += 6;
 			} else if (Info.IsPortPresent ("Serial")) {
 				comb -= 1;
-			} else if (Info.GetBatteryCount (Battery.D) == Info.GetBatteryCount (Battery.AA)) {						//WANRING NEED TO KNOW D==AA
+			} else if (Info.GetBatteryCount (Battery.D) == Info.GetBatteryCount (Battery.AA) + Info.GetBatteryCount (Battery.AAx3) + Info.GetBatteryCount (Battery.AAx4)) {						//WANRING NEED TO KNOW D==AA
 				comb -= 2;
 			} else {
 				comb -= 5;

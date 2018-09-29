@@ -159,7 +159,11 @@
 				screenHandle ("s");
 				return false;
 			};
+
+		Info.OnBombExploded += delegate {
+			OnExplode ();
 		
+		};
 	}
 
 		
@@ -399,11 +403,11 @@
 			}
 			break;
 		case 4:
-			if (System.DateTime.Now.DayOfWeek.Equals ("Monday")) {
+			if (System.DateTime.Now.DayOfWeek == System.DayOfWeek.Monday) {
 				comb += 3;
 			} else if (Info.GetBatteryHolderCount () >= 2) {
 				comb -= 1;
-			} else if (System.DateTime.Now.DayOfWeek.Equals ("Friday") && System.DateTime.Now.Date.Equals (13)) {
+			} else if (System.DateTime.Now.DayOfWeek == System.DayOfWeek.Friday && System.DateTime.Now.Day == 13) {
 				comb += 10;
 			} else {
 				comb += 2;
@@ -465,8 +469,8 @@
 			}
 			break;
 		case 1:
-			if (Info.GetSerialNumberLetters ().ToString ().Contains ("A") || Info.GetSerialNumberLetters ().ToString ().Contains ("E") || Info.GetSerialNumberLetters ().ToString ().Contains ("I") || Info.GetSerialNumberLetters ().ToString ().Contains ("O") || Info.GetSerialNumberLetters ().ToString ().Contains ("U") || Info.GetSerialNumberLetters ().ToString ().Contains ("Y")) {
-				comb += 1;
+			if (Info.GetSerialNumberLetters().Any(ch => "AEIOU".Contains(ch))){
+					comb += 1;
 			} else if (Info.IsIndicatorOff ("CLR")) {
 				comb -= 5;
 			} else if (Info.IsIndicatorOn ("CAR")) {
@@ -476,7 +480,7 @@
 			}
 			break;
 		case 14:
-			if (System.DateTime.Now.DayOfWeek.Equals ("THURSDAY")) {
+			if(System.DateTime.Now.DayOfWeek == System.DayOfWeek.Thursday) {
 				comb += 5;
 			} else if (Info.GetPortPlateCount () > 2) {
 				comb -= 1;
@@ -511,7 +515,7 @@
 			}
 			break;
 		case 15:
-			if (System.DateTime.Now.Hour > 17) {
+			if (System.DateTime.Now.Hour >= 17) {
 				comb += 2;
 			} else if (Info.GetBatteryCount (Battery.AA) == Info.GetIndicators ().Count ()) {			//WARNING NEED TO KNOW AA==IND
 				comb -= 2;
@@ -526,7 +530,7 @@
 				comb += 2;
 			} else if (Info.IsIndicatorOn ("NSA")) {
 				comb -= 2;
-			} else if (System.DateTime.Now.DayOfWeek.ToString ().Equals ("TUESDAY")) {
+			} else if (System.DateTime.Now.DayOfWeek == System.DayOfWeek.Tuesday) {
 				comb += 3;
 			} else {
 				comb += 3;
@@ -566,7 +570,7 @@
 			}
 			break;
 		case 16:
-			if (System.DateTime.Now.Hour > 20) {
+			if (System.DateTime.Now.Hour >= 20) {
 				comb += 9;
 			} else if (Info.IsIndicatorOn ("SND")) {
 				comb -= 15;
@@ -616,14 +620,14 @@
 				comb -= 3;
 			} else if (Info.IsIndicatorOff ("NSA")) {
 				comb -= 1;
-			} else if (System.DateTime.Now.DayOfWeek.Equals ("SUNDAY")) {
+			} else if ((System.DateTime.Now.DayOfWeek == System.DayOfWeek.Sunday)) {
 				comb += 4;
 			} else {
 				comb += 4;
 			}
 			break;
 		case 2:
-			if (System.DateTime.Now.DayOfWeek.Equals ("WEDNESDAY")) {
+			if(System.DateTime.Now.DayOfWeek == System.DayOfWeek.Wednesday) {
 				comb += 3;
 			} else if (Info.GetModuleNames ().Contains ("LEGO")) {
 				comb -= 2;
@@ -649,7 +653,7 @@
 				comb += 1;
 			} else if (Info.IsPortPresent ("PS2")) {
 				comb -= 2;
-			} else if (System.DateTime.Now.Date.ToString ().Equals ("12/25")) {
+			} else if (System.DateTime.Now.Day == 25 && System.DateTime.Now.Month ==12) {
 				comb += 5;
 			} else {
 				comb += 1;
@@ -660,9 +664,8 @@
 				comb += 3;
 			} else if (System.DateTime.Now.Month == 4) {
 				comb += 2;
-			} else if (System.DateTime.Now.DayOfWeek.Equals ("SATURDAY")) {
+			} else if (System.DateTime.Now.DayOfWeek == System.DayOfWeek.Saturday){
 				comb += 1;
-			
 			} else {
 				comb -= 2;
 			}
@@ -760,8 +763,7 @@
 
 		if (_valve)
 			//presT==maxPT&&presBL==maxPBL&&presBR==maxPBR && 
-			 {
-			
+		{
 			if (presT == maxPT && presBL == maxPBL && presBR == maxPBR) {
 				Debug.LogFormat ("[Manometers #{0}] Module solved.", _moduleId);
 				_isSolved = true;
@@ -958,6 +960,14 @@
 		Module.HandlePass ();
 	}
 
+	void OnExplode(){
+		StopCoroutine ("pressureCount");
+		if (timerSound != null) {
+			//		Debug.LogFormat ("CUT SOUND");
+			timerSound.StopSound ();
+			timerSound = null;
+		}
+	}
 
 	public string TwitchHelpMessage = "Submit the target pressure with ''!{0} submit 20''. Set the manometers pressure (TOP = t, BOTTOM LEFT = bl, BOTTOM RIGHT = br) with ''!{0} t 2'' or join them with ''!{0} t 2 bl 3 br 5''. Turn the valve with ''!{0} valve''.";
 	KMSelectable[] ProcessTwitchCommand (string command)

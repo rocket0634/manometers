@@ -207,7 +207,7 @@
 			}
 		}
 	}
-	void reachedPressure(){
+	void reachedPressure(){ 
 		int color = Random.Range (0, 5);
 		switch (color) {
 		case 0:
@@ -440,7 +440,7 @@
 				comb += 3;
 			} else if (Info.IsIndicatorOff ("FRK")) {
 				comb -= 8;
-			} else if (Info.GetBatteryCount (Battery.AA) + Info.GetBatteryCount (Battery.AAx3) + Info.GetBatteryCount (Battery.AAx4) > Info.GetBatteryCount (Battery.D)) { 				//WARNING : NEED TO KNOW AA>D
+			} else if (Info.GetBatteryCount (Battery.AA) + Info.GetBatteryCount (Battery.AAx3) + Info.GetBatteryCount (Battery.AAx4) > Info.GetBatteryCount (Battery.D))  { 				//WARNING : NEED TO KNOW AA>D
 				comb += 2;
 			} else {
 				comb -= 2;
@@ -469,13 +469,16 @@
 			}
 			break;
 		case 1:
-			if (Info.GetSerialNumberLetters().Any(ch => "AEIOU".Contains(ch))){
-					comb += 1;
-			} else if (Info.IsIndicatorOff ("CLR")) {
-				comb -= 5;
-			} else if (Info.IsIndicatorOn ("CAR")) {
+			if (Info.IsIndicatorOn ("CAR")) {
 				comb += 2;
-			} else {
+			}
+		 else if (Info.IsIndicatorOff ("CLR")) {
+				comb -= 5;
+			} 
+			else if (Info.GetSerialNumberLetters().Any(ch => "AEIOU".Contains(ch))){
+				comb += 1;
+			}
+			else {
 				comb += 5;
 			}
 			break;
@@ -493,12 +496,12 @@
 			break;
 		case 20:
 			
-			if (Info.GetModuleNames ().Contains ("Dr. Doctor")) {
-				comb += 2;
+			if (System.DateTime.Now.Month%2==0) {
+				comb += 1;
 			} else if (Info.IsIndicatorOn ("IND")) {
 				comb -= 8;
-			} else if (System.DateTime.Now.Month%2==0) {
-				comb += 1;
+			} else if(Info.GetModuleNames ().Contains ("Dr. Doctor")) {
+				comb += 2;
 			} else {
 				comb -= 4;
 			}
@@ -563,7 +566,7 @@
 				comb += 2;
 			} else if (Info.IsIndicatorOn ("CLR")) {
 				comb -= 2;
-			} else if (Info.GetBatteryCount (Battery.AA) + Info.GetBatteryCount (Battery.AAx3) + Info.GetBatteryCount (Battery.AAx4) == Info.GetStrikes ()) {						//WARNING NEED TO KNOW AA==STR
+			} else if  (Info.GetBatteryCount (Battery.AA) + Info.GetBatteryCount (Battery.AAx3) + Info.GetBatteryCount (Battery.AAx4) == Info.GetStrikes ()) {						//WARNING NEED TO KNOW AA==STR
 				comb += 3;
 			} else {
 				comb += 2;

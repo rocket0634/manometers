@@ -110,13 +110,13 @@
 
 		//private int stageAmt, stageCur = 1, ans, inputAns = 0, threshold = 10;
 
-		void Start ()
+	void Start ()
 	{
 			_moduleId = _moduleIdCounter++;
 			Module.OnActivate += Activate;
 		}
 
-		private void Awake()
+	private void Awake()
 	{
 			abort.OnInteract += delegate() {
 				abortHandle ();
@@ -160,33 +160,35 @@
 				return false;
 			};
 
-		Info.OnBombExploded += delegate {
+			Info.OnBombExploded += delegate {
 			OnExplode ();
 		
 		};
 	}
-
 		
 
-		void Activate()
+	void Activate()
 	{
 			Init();
 			_lightsOn = true;
 		}
 
-		void Init()
+	void Init()
 		{
-		StartCoroutine ("blink");
+		
 		reachedPressure ();
+
+
 		}
 
-		void abortHandle(){
+	void abortHandle(){
 		if (!_isSolved&&_lightsOn) {
 			if (submit&&!turn) {
 				StartCoroutine ("valveR");
 			}
 		}
 	}
+
 	IEnumerator blink(){
 		
 		while (pressure!=10) {
@@ -207,7 +209,11 @@
 			}
 		}
 	}
+
 	void reachedPressure(){ 
+	if (Info.GetModuleNames ().Contains ("LEGOs")) { //LEGOModule
+			StartCoroutine ("blink");
+		}
 		int color = Random.Range (0, 5);
 		switch (color) {
 		case 0:
@@ -288,8 +294,7 @@
 		}
 		Debug.LogFormat ("[Manometers #{0}] Screen is {2}, minus button is {3} and plus button is {4}, therefore the pressure to reach is {1}", _moduleId, gP, screenC, minC, plusC);
 	}
-
-
+		
 	void generatePressure (int mano, int pres, TextMesh manoText)
 	{
 	//	Debug.LogFormat ("PRESSURIZATION");
@@ -320,30 +325,39 @@
 			maxPBR = pres;br = false;
 		}*/
 	}
-
-
-		void startMano()
+		
+	void startMano()
 	{
 		int comb = 28;
 	//	Debug.LogFormat("{0}",_moduleIdCounter);
 
+	#region Setting Pressures
 		presT = 0;
 		presBL = 0;
 		presBR = 0;
+	#endregion
+	#region Manometers show the pressure
 		T.text = (string)presT.ToString();
 		BL.text = (string)presBL.ToString();
 		BR.text = (string)presBR.ToString ();
+		#endregion
+	#region Set Manometers colors
 		colT = Random.Range (0, 3);
-			colBL = Random.Range (0, 3);
-			colBR = Random.Range (0, 3);
-		int greenC=0;
-		int redC=0;
+		colBL = Random.Range (0, 3);
+		colBR = Random.Range (0, 3);		
+		#endregion
+		int greenC=0; 
+		int redC=0;   
+	#region Telling what is the combination obtained
 		actualCombination [0] = colBL;
 		actualCombination [1] = colT;
 		actualCombination [2] = colBR;
+		#endregion
+	#region Setting correct pressure
 		generatePressure (colT, presT, T);
 		generatePressure (colBL, presBL, BL);
 		generatePressure (colBR, presBR, BR);
+
 		for (int u = 0; u < 27; u++) {
 			int botL=0, top=0, botR=0;
 			//Debug.LogFormat ("{0}", u);
@@ -367,7 +381,8 @@
 			}
 
 		}
-
+		#endregion
+		Debug.LogFormat ("avant " + comb);
 		switch (comb) {
 		case 10:
 			if (Info.GetBatteryCount () >= 2) {
@@ -500,7 +515,7 @@
 				comb += 1;
 			} else if (Info.IsIndicatorOn ("IND")) {
 				comb -= 8;
-			} else if(Info.GetModuleNames ().Contains ("Dr. Doctor")) {
+			} else if(Info.GetModuleNames ().Contains ("Dr. Doctor")) { 
 				comb += 2;
 			} else {
 				comb -= 4;
@@ -630,9 +645,9 @@
 			}
 			break;
 		case 2:
-			if(System.DateTime.Now.DayOfWeek == System.DayOfWeek.Wednesday) {
+			if (System.DateTime.Now.DayOfWeek == System.DayOfWeek.Wednesday) {
 				comb += 3;
-			} else if (Info.GetModuleNames ().Contains ("LEGO")) {
+			} else if (Info.GetModuleNames ().Contains ("LEGOs")) { //LEGOModule
 				comb -= 2;
 			} else if (Info.GetBatteryCount (Battery.AA) + Info.GetBatteryCount (Battery.AAx3) + Info.GetBatteryCount (Battery.AAx4) > 2) {												//WARNING NEED TO KNOW AA>2
 				comb += 2;
@@ -674,7 +689,9 @@
 			}
 			break;
 		
-		}if (comb >= 27) {
+		}
+		Debug.LogFormat ("après " + comb);
+		if (comb >= 27) {
 			comb -= 27;
 		} else if (comb < 0) {
 			comb += 27;
@@ -682,6 +699,8 @@
 			maxPT = pressureList [comb, 1];
 		maxPBL = pressureList [comb, 0];
 		maxPBR = pressureList [comb, 2];
+		Debug.LogFormat ("later " + maxPT);
+
 
 		switch (colT) {
 		case GREEN:
@@ -743,11 +762,9 @@
 		}else{
 			Debug.LogFormat("[Manometers #{0}] : Max Pressures are : {1} (TOP), {2} (BL), {3} (BR). Pressure to reach is {4}. The valve must not be used.", _moduleId, maxPT, maxPBL, maxPBR, gP);
 		}
-			}
-		
-					
+			}					
 			
-		IEnumerator valveR(){
+	IEnumerator valveR(){
 		
 		if (timerSound!=null) {
 	//		Debug.LogFormat ("CUT SOUND");
@@ -900,7 +917,6 @@
 			}
 		}
 	}
-
 
 	void screenHandle(string type){
 		if (!submit&&_lightsOn) {
